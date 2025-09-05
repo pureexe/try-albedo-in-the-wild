@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-bottom">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Try Albedo In-the-wild</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@cityssm/bulma-sticky-table@3.0.1/bulma-with-sticky-table.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .fixed-tabs {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          z-index: 1000;
+        }
+        body {
+          /* padding-top: 3rem; */ /* Adjust for the height of the fixed tab */
+        }
+        .crop-image {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+            object-position: left center; /* Show the left half */
+        }
+    </style>
+    <script>
+   
+    </script>
+</head>
+<body>
+<div id="app">     
+
+
+<table class="table is-bordered is-striped is-narrow mx-auto has-sticky-header has-sticky-footer has-sticky-column" >
+<thead>
+        <tr>
+            <th>Name</rh>
+            <th>Input</th>
+            <th><a href="https://yaksoy.github.io/ColorfulShading/" target="_blank">Colorful Diffuse</a></th>
+            <th><a href="https://research.nvidia.com/labs/toronto-ai/DiffusionRenderer/" target="_blank">Cosmos1 Diffusion Renderer</a></th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr v-for="scene in scenes">
+                <td> {{scene}} </td>    
+                <td>
+                    <figure class="image " style="max-width: 500px;">
+                        <img loading="lazy" :src="'third_party/unsplash/'+scene+'.jpg'" />
+                    </figure>
+                </td>
+                <td>
+                  <figure class="image " style="width: 500px;">
+                        <img loading="lazy" :src="'results/colorful-diffuse/'+scene+'.png'" />
+                    </figure>
+                </td>
+                <td>
+                    <figure class="image" style="width: 500px;">
+                        <img loading="lazy" :src="'results/cosmos1-diffusion-renderer/'+scene+'.jpg'" />
+                    </figure>
+                </td>
+            </tr>  
+    </tbody>
+</table>
+
+
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+_.mixin({
+    padLeftZeros: function(num, size) {
+        let s = String(num);
+        while (s.length < size) {
+            s = "0" + s;
+        }
+        return s;
+    }
+});
+function fetchJson(fileURL, callback) {
+    fetch(fileURL)
+        .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+        })
+        .then(jsonData => callback(null, jsonData))
+        .catch(error => callback(error, null));
+    }
+      
+const { createApp, ref } = Vue
+createApp({
+    setup() {
+        const name = ref('Hello');
+        const scenes = ref([
+            "abandon_building",
+            "abandon_factory",
+            "airplane_window",
+            "airport",
+            "anime_wall",
+            "anpanman",
+            "apu",
+            "aquarium",
+            "arcade",
+            "asakusa",
+            "backpacker",
+            "balloon",
+            "basketball",
+            "beach_party",
+            "bed",
+            "bicycle",
+            "boat",
+            "brick_apartment",
+            "bts",
+            "buddhist",
+            "bw1",
+            "cafe",
+            "cambodia",
+            "car",
+            "car2",
+            "cashier",
+            "castle2",
+            "castle3",
+            "cat",
+            "ceiling_light",
+            "celine",
+            "center_lamp",
+            "central_park",
+            "chateau",
+            "chef",
+            "chessboard",
+            "chinese_lion",
+            "chinese_lion2",
+            "chiyoda",
+            "christmas_toy",
+            "church",
+            "city_curve",
+            "club",
+            "coast",
+            "comiket",
+            "coral_reef",
+            "david",
+            "desert",
+            "desk",
+            "dress",
+            "driving",
+            "dubai_coffee",
+            "eiffel_tower",
+            "eye",
+            "face",
+            "field",
+            "firecracker",
+            "fish",
+            "frozen_river",
+            "genshin1",
+            "girl",
+            "girl_dance",
+            "girl_mirror",
+            "girl_robot",
+            "grab",
+            "grass_field",
+            "green_car",
+            "grid",
+            "gundam",
+            "halloween",
+            "hand_neon",
+            "hill",
+            "hiroshima",
+            "house",
+            "house2",
+            "inside_train",
+            "inside_train2",
+            "japan_kitchen",
+            "kamakura",
+            "kitchen",
+            "korea_pagoda",
+            "korea_sakura",
+            "kyudo",
+            "lake",
+            "library",
+            "light_mist",
+            "lionking",
+            "living_room",
+            "man_eating",
+            "man_face",
+            "mask",
+            "meeting",
+            "mickey",
+            "miko",
+            "mv",
+            "mysore_palace",
+            "nap",
+            "netherland",
+            "opera_house",
+            "operating_room",
+            "pagoda",
+            "palace",
+            "panda",
+            "paper_lamb",
+            "parade",
+            "pattern",
+            "people",
+            "performance",
+            "piano",
+            "public_space",
+            "pudding",
+            "racing",
+            "restaurant",
+            "restaurant2",
+            "restaurant3",
+            "rhino",
+            "rice",
+            "rice_cooker",
+            "rock",
+            "rock2",
+            "safari",
+            "sakura",
+            "sandwich",
+            "seat",
+            "shibuya",
+            "shibuya_box",
+            "shibuya_crossing",
+            "shibuya_normal",
+            "shoe",
+            "shrimp",
+            "shrine",
+            "slum",
+            "snow_bird",
+            "snowboarding",
+            "snowfield",
+            "sphnx",
+            "spice",
+            "statue",
+            "store_snow",
+            "street2",
+            "sushi_chef",
+            "taiwan_market",
+            "taj_mahal",
+            "teddy_bear",
+            "temple",
+            "temple_fair",
+            "tennis",
+            "thai_food",
+            "toast",
+            "torii",
+            "train",
+            "train2",
+            "tuktuk",
+            "tuktuk2",
+            "under_roof",
+            "underwater",
+            "underwater2",
+            "vending_machine",
+            "warehouse",
+            "warp",
+            "window",
+            "woman_boat",
+            "yuurakuchou",
+            "zoo_underwater"
+        ]);
+        return {
+            scenes,
+        }
+    },
+    methods: {
+        handleKeyPress(event) {
+        },
+        getVersion(splittype, direction, learning_rate,  guidance){
+        },
+        getSceneName(scene) {
+            return scene.split('+')[0];
+        },
+        getFileName(scene) {
+            return scene.split('+').pop();
+        }
+    },
+    mounted() {
+        var self = this;
+    },
+    beforeDestroy() {
+    }
+}).mount('#app')
+</script>
+</body>
+</html>
