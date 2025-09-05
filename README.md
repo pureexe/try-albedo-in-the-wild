@@ -1,6 +1,6 @@
 # try-albedo-in-the-wild
 
-## [Website](https://pureexe.github.io/try-albedo-in-the-wild)
+### [Website](https://pureexe.github.io/try-albedo-in-the-wild)
 
 An experiment to inferencing a method to extract Albedo from in the wild image. 
 
